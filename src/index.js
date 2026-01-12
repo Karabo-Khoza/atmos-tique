@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (taskText !== "") {
       let li = document.createElement("li");
       li.innerHTML = `
-      <input type="checkbox" class="task-checkbox" />
+      <input type="checkbox" class="checkbox" />
       <span class="task-text">${taskText}</span>
       `;
 
