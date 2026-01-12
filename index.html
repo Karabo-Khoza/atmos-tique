@@ -19,17 +19,22 @@
           <input
             type="text"
             class="task-input"
+            id="task-input"
             placeholder="Add a new task..."
             required
           />
-          <button type="submit" class="add-task-button">
+          <button type="submit" class="add-task-button" id="addTaskButton">
             <i class="fa-solid fa-plus"></i>
           </button>
         </form>
         <div class="task-list">
           <!-- Tasks will be dynamically added here -->
-          <ul></ul>
-          <img src="./images/empty notes.jpg" alt="Empty Notes" />
+          <ul id="task-list"></ul>
+          <img
+            src="./images/empty notes.jpg"
+            alt="Empty Notes"
+            id="empty-image"
+          />
         </div>
       </div>
     </div>
