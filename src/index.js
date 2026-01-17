@@ -8,9 +8,10 @@ document.addEventListener("DOMContentLoaded", () => {
   let emptyImage = document.querySelector("#empty-image");
   let todoContainer = document.querySelector(".todo-container");
 
-  function addTask(text, completed = false) {
+  function addTask(event, completed = false) {
     // Add a new task to the task list
-    let taskText = text || taskInput.value.trim();
+    event.preventDefault();
+    let taskText = taskInput.value.trim();
     if (taskText !== "") {
       // Create new list item
       let li = document.createElement("li");
@@ -81,7 +82,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       addTaskButton.disabled = true;
     }
-    addTaskButton.classList.toggle("active", taskInput.value.trim() !== "");
   }
 
   function toggleEmptyState() {

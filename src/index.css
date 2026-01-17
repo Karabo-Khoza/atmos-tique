@@ -111,6 +111,11 @@ body {
   transition: box-shadow 0.2s ease;
 }
 
+#task-list li.completed .task-text {
+  text-decoration: 2px line-through;
+  color: #525151;
+}
+
 #task-list li:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
