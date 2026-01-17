@@ -7,8 +7,20 @@ document.addEventListener("DOMContentLoaded", () => {
   let taskList = document.querySelector("#task-list");
   let emptyImage = document.querySelector("#empty-image");
   let todoContainer = document.querySelector(".todo-container");
+  let progressBar = document.querySelector("#progress");
+  let progressNumber = document.querySelector("#numbers");
 
-  function addTask(event, completed = false) {
+  // Initialize progress bar
+  function updateProgress() {
+    let totalTasks = taskList.children.length;
+    let completedTasks = taskList.querySelectorAll(".checkbox:checked").length;
+    progressBar.style.width = totalTasks
+      ? `${(completedTasks / totalTasks) * 100}%`
+      : "0%";
+    progressNumber.textContent = `${completedTasks} / ${totalTasks}`;
+  }
+
+  function addTask(event, completed = false, checkCompletion = true) {
     // Add a new task to the task list
     event.preventDefault();
     let taskText = taskInput.value.trim();
@@ -30,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
           taskInput.value = li.querySelector(".task-text").textContent;
           taskList.removeChild(li);
           toggleEmptyState();
+          updateProgress();
         }
       }
 
@@ -51,12 +64,14 @@ document.addEventListener("DOMContentLoaded", () => {
         editBtn.disabled = isChecked;
         editBtn.style.cursor = isChecked ? "not-allowed" : "pointer";
         editBtn.style.opacity = isChecked ? "0.5" : "1";
+        updateProgress();
       }
 
       // Function to delete task
       function deleteTask() {
         taskList.removeChild(li);
         toggleEmptyState();
+        updateProgress();
       }
 
       // Add event listeners for edit, delete, and checkbox buttons
@@ -71,6 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     toggleEmptyState();
+    updateProgress((checkCompletion = true));
   }
 
   function handleInputChange(event) {
@@ -98,4 +114,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
   addTaskButton.addEventListener("click", addTask);
   taskInput.addEventListener("input", handleInputChange);
+  updateProgress((checkCompletion = true));
 });
