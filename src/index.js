@@ -18,12 +18,38 @@ document.addEventListener("DOMContentLoaded", () => {
       ? `${(completedTasks / totalTasks) * 100}%`
       : "0%";
     progressNumber.textContent = `${completedTasks} / ${totalTasks}`;
+
+    // Launch confetti when all tasks are completed
+    if (totalTasks > 0 && completedTasks === totalTasks) {
+      launchConfetti();
+    }
   }
 
-  function addTask(event, completed = false, checkCompletion = true) {
+  // saving tasks to local storage
+  function saveTasksToLocalStorage() {
+    let tasks = Array.from(taskList.children).map((li) => {
+      return {
+        text: li.querySelector(".task-text").textContent,
+        completed: li.querySelector(".checkbox").checked,
+      };
+    });
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }
+
+  // Load tasks from local storage
+  function loadTasksFromLocalStorage() {
+    let savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    savedTasks.forEach(({ text, completed }) => {
+      addTask(null, text, completed, false);
+    });
+    toggleEmptyState();
+    updateProgress();
+  }
+
+  function addTask(event, text, completed = false, checkCompletion = true) {
     // Add a new task to the task list
     event.preventDefault();
-    let taskText = taskInput.value.trim();
+    let taskText = text || taskInput.value.trim();
     if (taskText !== "") {
       // Create new list item
       let li = document.createElement("li");
@@ -43,6 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
           taskList.removeChild(li);
           toggleEmptyState();
           updateProgress();
+          saveTasksToLocalStorage();
         }
       }
 
@@ -65,6 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
         editBtn.style.cursor = isChecked ? "not-allowed" : "pointer";
         editBtn.style.opacity = isChecked ? "0.5" : "1";
         updateProgress();
+        saveTasksToLocalStorage();
       }
 
       // Function to delete task
@@ -72,6 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
         taskList.removeChild(li);
         toggleEmptyState();
         updateProgress();
+        saveTasksToLocalStorage();
       }
 
       // Add event listeners for edit, delete, and checkbox buttons
@@ -87,6 +116,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     toggleEmptyState();
     updateProgress((checkCompletion = true));
+    saveTasksToLocalStorage();
+    addTaskButton.disabled = true;
   }
 
   function handleInputChange(event) {
@@ -115,4 +146,35 @@ document.addEventListener("DOMContentLoaded", () => {
   addTaskButton.addEventListener("click", addTask);
   taskInput.addEventListener("input", handleInputChange);
   updateProgress((checkCompletion = true));
+  loadTasksFromLocalStorage();
 });
+
+// added for confetti effect on task completion
+function launchConfetti() {
+  const end = Date.now() + 15 * 1000;
+
+  // go Buckeyes!
+  const colors = ["#bb0000", "#ffffff"];
+
+  (function frame() {
+    confetti({
+      particleCount: 2,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 },
+      colors: colors,
+    });
+
+    confetti({
+      particleCount: 2,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 },
+      colors: colors,
+    });
+
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
+  })();
+}
