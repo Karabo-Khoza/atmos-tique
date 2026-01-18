@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let taskInput = document.querySelector("#task-input");
   let addTaskButton = document.querySelector("#addTaskButton");
   let taskList = document.querySelector("#task-list");
-  let emptyImage = document.querySelector("#empty-image");
+  let emptyImage = document.querySelector("#empty-message");
   let todoContainer = document.querySelector(".todo-container");
   let progressBar = document.querySelector("#progress");
   let progressNumber = document.querySelector("#numbers");
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function addTask(event, text, completed = false, checkCompletion = true) {
     // Add a new task to the task list
-    event.preventDefault();
+    if (event) event.preventDefault();
     let taskText = text || taskInput.value.trim();
     if (taskText !== "") {
       // Create new list item
@@ -112,11 +112,11 @@ document.addEventListener("DOMContentLoaded", () => {
       taskList.appendChild(li);
       // Clear input field
       taskInput.value = "";
+      saveTasksToLocalStorage();
     }
 
     toggleEmptyState();
-    updateProgress((checkCompletion = true));
-    saveTasksToLocalStorage();
+    updateProgress();
     addTaskButton.disabled = true;
   }
 
@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   addTaskButton.addEventListener("click", addTask);
   taskInput.addEventListener("input", handleInputChange);
-  updateProgress((checkCompletion = true));
+  updateProgress();
   loadTasksFromLocalStorage();
 });
 
@@ -154,7 +154,7 @@ function launchConfetti() {
   const end = Date.now() + 15 * 1000;
 
   // go Buckeyes!
-  const colors = ["#bb0000", "#ffffff"];
+  const colors = ["#ff6f91", "#ffffff"];
 
   (function frame() {
     confetti({

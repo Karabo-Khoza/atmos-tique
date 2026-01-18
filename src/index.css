@@ -9,7 +9,7 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-image: url(../images/background\ image.jpg);
+  background-image: url(../images/Background-image.jpg);
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -238,7 +238,8 @@ body {
   background: #ff6f91;
 }
 
-img {
-  width: 250px;
-  height: 100%;
+.no-tasks-message {
+  font-size: 1.2rem;
+  color: #fff;
+  text-align: center;
 }
